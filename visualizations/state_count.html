@@ -18,6 +18,17 @@ function make_map() {
 	  success: function(state_data) {
 	  	// make data object for datamaps
 	  	var data_obj = {};
+		var max = 0;
+		for (var state in state_data) {
+	  	  if (!state_data.hasOwnProperty(state)) {
+		  	continue;
+		  }
+		  count = parseInt(state_data[state]);
+		  if (count>max){
+			max=count;
+		  }
+			  
+		}
 	  	for (var state in state_data) {
 	  	  if (!state_data.hasOwnProperty(state)) {
 		  	continue;
@@ -26,8 +37,14 @@ function make_map() {
 		  if (count == 0) {
 		  	fill_color_key = 'NONE';
 		  }
+		  elseif (count<=round(.33*max)) {
+			fill_color_key = 'LOW';
+		  }
+		  elseif (count<=round(.66*max)) {
+			fill_color_key = 'MEDIUM';
+		  }
 		  else {
-		  	fill_color_key = 'COLOR';
+		  	fill_color_key = 'HIGH';
 		  }
 		  data_obj[state] = {fillKey:fill_color_key, numberOfThings:count};
 		}
@@ -35,9 +52,9 @@ function make_map() {
     						element: document.getElementById('map_container'),
     						scope: 'usa',
     						fills: {
-					            HIGH: '#afafaf',
-					            LOW: '#123456',
-					            MEDIUM: 'blue',
+					            HIGH: '#800080',
+					            LOW: '#DA70D6',
+					            MEDIUM: '#9932CC',
 					            NONE: '#AFAFAF',
 					            COLOR: '#4789CD',
 					            UNKNOWN: 'rgb(0,0,0)',
